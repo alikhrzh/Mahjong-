@@ -1,0 +1,32 @@
+{
+  "name": "mahjong-solitaire",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bash scripts/run-next.sh dev -H 127.0.0.1",
+    "build": "bash scripts/run-next.sh build",
+    "start": "bash scripts/run-next.sh start -H 127.0.0.1",
+    "preview": "bash scripts/run-next.sh build && bash scripts/run-next.sh start -H 127.0.0.1",
+    "lint": "bash scripts/run-next.sh lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "framer-motion": "^12.6.3",
+    "next": "15.3.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.2",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5"
+  }
+}
