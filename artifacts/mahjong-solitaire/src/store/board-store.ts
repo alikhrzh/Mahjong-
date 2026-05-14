@@ -9,6 +9,8 @@ import type { TileKind, TileModel } from "@/lib/mahjong/types";
 import { appendGameRecord } from "@/lib/persistence/game-records";
 import { loadDifficultyPreference, saveDifficultyPreference } from "@/lib/persistence/difficulty-storage";
 import { DIFFICULTY_SHUFFLE_PASSES, type Difficulty } from "@/lib/product/difficulty";
+import { insertCompletedGame } from "@/lib/supabase/history";
+import { useAuthStore } from "@/store/auth-store";
 
 type RemovalEntry = { a: string; b: string };
 
@@ -236,6 +238,17 @@ export const useBoardStore = create<{
             won: true,
             difficulty: s.difficulty,
           });
+          // Fire-and-forget cloud sync — never blocks or throws
+          const authUser = useAuthStore.getState().user;
+          if (authUser) {
+            insertCompletedGame({
+              user_id: authUser.id,
+              duration_seconds: Math.round(durationMs / 1000),
+              won: true,
+              difficulty: s.difficulty,
+              moves: nextHistory.length,
+            }).catch(() => {});
+          }
         }
 
         return {
