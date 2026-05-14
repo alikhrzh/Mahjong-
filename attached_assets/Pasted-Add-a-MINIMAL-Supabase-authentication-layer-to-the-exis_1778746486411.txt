@@ -1,0 +1,121 @@
+Add a MINIMAL Supabase authentication layer to the existing Vite + React + TypeScript Mahjong project.
+
+IMPORTANT:
+
+* Do NOT refactor existing architecture
+* Do NOT touch gameplay/store systems
+* Do NOT introduce routing complexity
+* Do NOT add backend/server logic
+* Do NOT add password auth
+* Keep everything client-side only
+* Keep implementation lightweight and additive
+
+Current setup:
+
+* src/lib/supabase/client.ts already exists
+* getSupabaseBrowser() already works
+* Environment variables already use:
+
+  * VITE_SUPABASE_URL
+  * VITE_SUPABASE_ANON_KEY
+
+Your task:
+Implement ONLY:
+
+1. sign in with email magic link
+2. sign out
+3. session persistence
+4. lightweight auth UI
+
+Requirements:
+
+1. Auth helper layer
+   Create a small auth helper module:
+
+* getSession
+* signInWithMagicLink(email)
+* signOut
+* subscribeToAuthChanges
+
+Keep it isolated from gameplay logic.
+
+Suggested location:
+
+* src/lib/supabase/auth.ts
+
+---
+
+2. Auth state
+   Add lightweight auth state:
+
+* current user
+* loading state
+
+Do NOT move gameplay state into auth state.
+
+Use either:
+
+* a tiny Zustand slice
+  OR
+* a lightweight React context
+
+Prefer the smallest safe solution.
+
+---
+
+3. Auth UI
+   Add a very small auth section:
+
+* email input
+* “Send Magic Link” button
+* signed-in email display
+* sign out button
+
+Requirements:
+
+* Minimal styling
+* Reuse existing UI patterns
+* No modal system
+* No routing changes
+
+---
+
+4. Session persistence
+   Requirements:
+
+* Existing Supabase session persistence should work automatically
+* Restore user on refresh
+* Subscribe to auth state changes safely
+
+Avoid:
+
+* hydration mismatch patterns
+* duplicate subscriptions
+* unnecessary rerenders
+
+---
+
+5. Safety requirements
+
+* Logged-out mode must still fully work
+* Game must remain playable without auth
+* If Supabase env vars are missing:
+
+  * auth UI should gracefully disable itself
+  * app should not crash
+
+---
+
+Before coding:
+
+1. Explain exact files to create/change
+2. Explain chosen auth state approach
+3. Explain how session restoration works
+
+After implementation:
+
+* Ensure npm run build passes
+* Ensure no TypeScript errors
+* Ensure auth survives refresh
+* Ensure no gameplay regressions
+* Summarize all changes briefly
