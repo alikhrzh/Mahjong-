@@ -1,6 +1,6 @@
-# [Project name]
+# Mahjong Solitaire
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A browser-based Mahjong Solitaire game where players match and clear tile pairs from a classic turtle layout.
 
 ## Run & Operate
 
@@ -22,15 +22,26 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/mahjong-solitaire/` — Vite + React frontend (the game)
+- `artifacts/mahjong-solitaire/src/components/mahjong/` — Board, Tile, TileFace, TileShell, WinOverlay, HistoryPanel
+- `artifacts/mahjong-solitaire/src/store/board-store.ts` — Zustand game state (tiles, undo, hints, difficulty)
+- `artifacts/mahjong-solitaire/src/lib/mahjong/` — Game logic (deck, layout, matching, removability, randomness)
+- `artifacts/mahjong-solitaire/src/lib/persistence/` — localStorage for game records and difficulty preference
+- `artifacts/mahjong-solitaire/src/index.css` — Tailwind v4 theme with zinc-based color palette
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Pure client-side game — no backend needed; all state lives in Zustand + localStorage
+- Supabase is optional (gracefully returns null if env vars not set) — used for future leaderboard/sync
+- Framer Motion drives tile press animations via TileShell's `whileTap`
+- Turtle layout is a fixed raw layout string parsed at startup, not fetched from a server
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Play Mahjong Solitaire with Easy/Medium/Hard difficulty levels
+- Undo moves, get hints, restart the same seed, or start a random new game
+- Track win/loss record and best time across sessions via localStorage
+- Light/dark mode toggle with system preference detection
 
 ## User preferences
 
