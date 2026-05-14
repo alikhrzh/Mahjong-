@@ -1,9 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
 import { Board } from "@/components/mahjong/Board";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { useBoardStore } from "@/store/board-store";
 
 export function GameClient() {
+  const hydrateStoredDifficulty = useBoardStore((s) => s.hydrateStoredDifficulty);
+
+  useEffect(() => {
+    hydrateStoredDifficulty();
+  }, [hydrateStoredDifficulty]);
+
   return (
     <main className="relative min-h-dvh">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.10),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.16),transparent_55%)]" />

@@ -8,6 +8,7 @@ const stateRing: Record<TileVisualState, string> = {
   available: "ring-1 ring-black/[0.06] shadow-tile",
   blocked: "ring-1 ring-black/[0.04] shadow-sm",
   selected: "ring-2 ring-indigo-400/80 shadow-[0_18px_40px_rgba(79,70,229,0.22)]",
+  hinted: "ring-2 ring-violet-400/70 shadow-[0_14px_32px_rgba(139,92,246,0.18)]",
 };
 
 export function TileShell({
@@ -23,12 +24,12 @@ export function TileShell({
       whileTap={visual === "blocked" ? undefined : { scale: 0.97 }}
       transition={{ type: "spring", stiffness: 520, damping: 34 }}
       className={[
-        "relative isolate flex select-none items-center justify-center overflow-hidden rounded-2xl",
+        "relative isolate flex touch-manipulation select-none items-center justify-center overflow-hidden rounded-2xl",
         "bg-gradient-to-b from-white to-zinc-100/95",
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]",
         stateRing[visual],
         visual === "blocked" ? "opacity-[0.68] saturate-[0.72] brightness-[0.98]" : "",
-        visual === "selected" ? "scale-[1.04]" : elevated ? "hover:scale-[1.02]" : "",
+        visual === "selected" ? "scale-[1.04]" : visual === "hinted" ? "scale-[1.025]" : elevated ? "hover:scale-[1.02]" : "",
       ].join(" ")}
       style={{
         width: "100%",

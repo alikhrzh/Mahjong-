@@ -1,4 +1,5 @@
 import type { TileKind } from "./types";
+import { kindEquals } from "./types";
 
 const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 
@@ -28,9 +29,24 @@ const dragons: TileKind[] = [
 /** 34 unique faces used in classic solitaire sets. */
 export const BASE_KINDS: TileKind[] = [...allSuits(), ...winds, ...dragons];
 
+const FLOWER_TILES: TileKind[] = [
+  { family: "flower", flower: 1 },
+  { family: "flower", flower: 2 },
+  { family: "flower", flower: 3 },
+  { family: "flower", flower: 4 },
+];
+
+const SEASON_TILES: TileKind[] = [
+  { family: "season", season: 1 },
+  { family: "season", season: 2 },
+  { family: "season", season: 3 },
+  { family: "season", season: 4 },
+];
+
 /**
  * Build a 144-tile deck for the turtle layout:
- * 30 kinds × 4 + 4 kinds × 6 = 144 (identical-match friendly).
+ * 30 kinds × 4 + 4 kinds × 6 − 8 (demoted to 2 each) + 8 flower/season = 144.
+ * Every face count is even except flowers/seasons which use group-match (any–any).
  */
 export function buildDeck144(): TileKind[] {
   const sixCopyKinds: TileKind[] = [
@@ -40,23 +56,19 @@ export function buildDeck144(): TileKind[] {
     { family: "dragon", dragon: "red" },
   ];
 
+  const fourOnlyKinds = BASE_KINDS.filter((k) => !sixCopyKinds.some((s) => kindEquals(s, k)));
+  /** Four kinds reduced 4→2 (−8 tiles) to make room for 4 flowers + 4 seasons. */
+  const demotedKinds = fourOnlyKinds.slice(0, 4);
+
   const deck: TileKind[] = [];
   for (const k of BASE_KINDS) {
-    const copies = sixCopyKinds.some((s) => kindEquals(s, k)) ? 6 : 4;
+    let copies = sixCopyKinds.some((s) => kindEquals(s, k)) ? 6 : 4;
+    if (demotedKinds.some((d) => kindEquals(d, k))) copies = 2;
     for (let i = 0; i < copies; i++) deck.push(k);
   }
+  deck.push(...FLOWER_TILES, ...SEASON_TILES);
   if (deck.length !== 144) {
     throw new Error(`Deck size ${deck.length}, expected 144`);
   }
   return deck;
-}
-
-function kindEquals(a: TileKind, b: TileKind): boolean {
-  if (a.family !== b.family) return false;
-  if (a.family === "suit" && b.family === "suit") {
-    return a.plane === b.plane && a.rank === b.rank;
-  }
-  if (a.family === "wind" && b.family === "wind") return a.wind === b.wind;
-  if (a.family === "dragon" && b.family === "dragon") return a.dragon === b.dragon;
-  return false;
 }

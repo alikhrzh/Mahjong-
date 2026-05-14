@@ -11,22 +11,28 @@ export function Tile({
   tile,
   tiles,
   selectedId,
+  hintedIds,
   px,
   onSelect,
 }: {
   tile: TileModel;
   tiles: TileModel[];
   selectedId: string | null;
+  hintedIds: string[];
   px: PixelLayout;
   onSelect: (id: string) => void;
 }) {
   if (!tile.alive) return null;
   const removable = isRemovable(tile, tiles);
+  const isHinted = hintedIds.includes(tile.id);
+  const isSelected = selectedId === tile.id;
   const visual: TileVisualState = !removable
     ? "blocked"
-    : selectedId === tile.id
+    : isSelected
       ? "selected"
-      : "available";
+      : isHinted
+        ? "hinted"
+        : "available";
   const pos = tileToScreen(tile, px);
 
   return (

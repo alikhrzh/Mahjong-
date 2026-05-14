@@ -102,7 +102,24 @@ function DragonMark({ dragon }: { dragon: "red" | "green" | "white" }) {
   );
 }
 
-export type TileVisualState = "available" | "blocked" | "selected";
+function BonusLabel({ label, n }: { label: string; n: number }) {
+  return (
+    <text
+      x="50"
+      y="68"
+      textAnchor="middle"
+      dominantBaseline="middle"
+      fill="currentColor"
+      className="font-semibold"
+      style={{ fontSize: 28, letterSpacing: -0.5 }}
+    >
+      {label}
+      {n}
+    </text>
+  );
+}
+
+export type TileVisualState = "available" | "blocked" | "selected" | "hinted";
 
 export function TileFace({ kind, state }: { kind: TileKind; state: TileVisualState }) {
   const muted = state === "blocked";
@@ -122,12 +139,16 @@ export function TileFace({ kind, state }: { kind: TileKind; state: TileVisualSta
             ? "text-zinc-500/80"
             : state === "selected"
               ? "text-indigo-700"
-              : "text-zinc-700"
+              : state === "hinted"
+                ? "text-violet-600"
+                : "text-zinc-700"
         }
       >
         {kind.family === "suit" && <SuitBars plane={kind.plane} rank={kind.rank} />}
         {kind.family === "wind" && <WindGlyph wind={kind.wind} />}
         {kind.family === "dragon" && <DragonMark dragon={kind.dragon} />}
+        {kind.family === "flower" && <BonusLabel label="Fl" n={kind.flower} />}
+        {kind.family === "season" && <BonusLabel label="Sn" n={kind.season} />}
       </g>
     </svg>
   );
