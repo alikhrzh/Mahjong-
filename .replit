@@ -22,3 +22,9 @@ timeoutMs = 20000
 [[ports]]
 localPort = 22887
 externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+VITE_SUPABASE_URL = "https://appxqawfylrdzylpudqc.supabase.co"
+VITE_SUPABASE_ANON_KEY = "sb_publishable_Ajf0J7sElJgTPZ5bCUFt1Q_8F_Tlh-3"
